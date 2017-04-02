@@ -82,5 +82,21 @@ public class NewsLoaderTests {
         assertThat(result.size(),is(1));
     }
 
+    @Test
+    public void withAndWithoutSubscriptionNews(){
+        incomingNews.add(new IncomingInfo("A", SubsciptionType.A));
+        incomingNews.add(new IncomingInfo("B", SubsciptionType.B));
+        incomingNews.add(new IncomingInfo("C", SubsciptionType.C));
+        incomingNews.add(new IncomingInfo("Public", SubsciptionType.NONE));
+        when(newsReader.read()).thenReturn(incomingNews);
+
+        PublishableNews publishable = newsLoader.loadNews();
+        List<String> result = (List<String>)Whitebox.getInternalState(publishable,"subscribentContent");
+        List<String> result2 = (List<String>)Whitebox.getInternalState(publishable,"publicContent");
+
+        assertThat(result.size(),is(3));
+        assertThat(result2.size(),is(1));
+
+    }
 }
 
