@@ -63,5 +63,23 @@ public class NewsLoaderTests {
         List<String> result = (List<String>)Whitebox.getInternalState(publishable,"subscribentContent");
         assertThat(result.size(),is(1));
     }
+    @Test
+    public void subscriptionBNews(){
+        incomingNews.add(new IncomingInfo("B", SubsciptionType.A));
+        when(newsReader.read()).thenReturn(incomingNews);
+
+        PublishableNews publishable = newsLoader.loadNews();
+        List<String> result = (List<String>)Whitebox.getInternalState(publishable,"subscribentContent");
+        assertThat(result.size(),is(1));
+    }
+    @Test
+    public void subscriptionCNews(){
+        incomingNews.add(new IncomingInfo("C", SubsciptionType.A));
+        when(newsReader.read()).thenReturn(incomingNews);
+
+        PublishableNews publishable = newsLoader.loadNews();
+        List<String> result = (List<String>)Whitebox.getInternalState(publishable,"subscribentContent");
+        assertThat(result.size(),is(1));
+    }
 }
 
