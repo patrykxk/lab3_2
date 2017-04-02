@@ -9,6 +9,11 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.mockito.internal.util.reflection.Whitebox;
 
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
@@ -39,7 +44,15 @@ public class NewsLoaderTests {
         mockStatic(PublishableNews.class);
         when(PublishableNews.create()).thenReturn(new PublishableNews());
 
-
     }
+    @Test
+    public void publicNews(){
+        IncomingNews incomingNews = new IncomingNews();
+        incomingNews.add(new IncomingInfo("Public", SubsciptionType.NONE));
+        when(newsReader.read()).thenReturn(incomingNews);
 
+        PublishableNews publishable = newsLoader.loadNews();
+        List<String> result = (List<String>)Whitebox.getInternalState(publishable,"publicContent");
+        assertThat(result.size(),is(1));
+    }
 }
