@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
@@ -23,7 +22,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 public class NewsLoaderTests {
     private NewsReader newsReader;
     private NewsLoader newsLoader = new NewsLoader();
-
+    private IncomingNews incomingNews = new IncomingNews();
     @Before
     public void setUp(){
         String readerType = "test";
@@ -47,7 +46,6 @@ public class NewsLoaderTests {
     }
     @Test
     public void publicNews(){
-        IncomingNews incomingNews = new IncomingNews();
         incomingNews.add(new IncomingInfo("Public", SubsciptionType.NONE));
         when(newsReader.read()).thenReturn(incomingNews);
 
@@ -55,4 +53,15 @@ public class NewsLoaderTests {
         List<String> result = (List<String>)Whitebox.getInternalState(publishable,"publicContent");
         assertThat(result.size(),is(1));
     }
+
+    @Test
+    public void subscriptionANews(){
+        incomingNews.add(new IncomingInfo("A", SubsciptionType.A));
+        when(newsReader.read()).thenReturn(incomingNews);
+
+        PublishableNews publishable = newsLoader.loadNews();
+        List<String> result = (List<String>)Whitebox.getInternalState(publishable,"subscribentContent");
+        assertThat(result.size(),is(1));
+    }
 }
+
