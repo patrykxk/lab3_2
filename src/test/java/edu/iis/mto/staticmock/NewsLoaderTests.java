@@ -65,7 +65,7 @@ public class NewsLoaderTests {
     }
     @Test
     public void subscriptionBNews(){
-        incomingNews.add(new IncomingInfo("B", SubsciptionType.A));
+        incomingNews.add(new IncomingInfo("B", SubsciptionType.B));
         when(newsReader.read()).thenReturn(incomingNews);
 
         PublishableNews publishable = newsLoader.loadNews();
@@ -74,12 +74,13 @@ public class NewsLoaderTests {
     }
     @Test
     public void subscriptionCNews(){
-        incomingNews.add(new IncomingInfo("C", SubsciptionType.A));
+        incomingNews.add(new IncomingInfo("C", SubsciptionType.C));
         when(newsReader.read()).thenReturn(incomingNews);
 
         PublishableNews publishable = newsLoader.loadNews();
         List<String> result = (List<String>)Whitebox.getInternalState(publishable,"subscribentContent");
         assertThat(result.size(),is(1));
     }
+
 }
 
